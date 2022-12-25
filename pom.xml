@@ -14,6 +14,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -35,9 +43,11 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>3.0.0</version>
                 <configuration>
-                    <mainClass>com.onlineinteract.hello_world.Main</mainClass>
+                    <!-- Toggle/Comment the following <mainClass> line to target class from cmd line
+                        e.g: mvn exec:java -Dexec.mainClass="com.onlineinteract.scanner.Main" -->
+<!--                     <mainClass>com.onlineinteract.hello_world.Main</mainClass>-->
                 </configuration>
             </plugin>
         </plugins>

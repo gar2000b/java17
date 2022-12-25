@@ -9,13 +9,18 @@ public class PrimeNumbers {
         generatePrimeNumbers(200);
     }
 
-    private static void generatePrimeNumbers(int upperRange) {
+    /**
+     * Method generating prime numbers up to an upper limit.
+     *
+     * @param upperLimit implicitly defining a range of prime numbers up to this upper limit.
+     */
+    private static void generatePrimeNumbers(int upperLimit) {
         int counter = 0;
 
         /**
          * Bootstrap by echoing out the first prime number in order to realise the efficiency gain.
          */
-        if (upperRange > 1) {
+        if (upperLimit > 1) {
             System.out.println("\nPrime Number: " + 2);
             counter++;
         }
@@ -23,7 +28,7 @@ public class PrimeNumbers {
         /**
          * Note: efficiency gain by starting at odd number of 3 and incrementing by 2.
          */
-        for (int i = 3; i <= upperRange; i += 2) {
+        for (int i = 3; i <= upperLimit; i += 2) {
             boolean isDivisible = false;
 
             for (int j = 2; j < i; j++) {
@@ -39,6 +44,6 @@ public class PrimeNumbers {
             }
         }
 
-        System.out.println("\nThere are: " + counter + " prime numbers from a total of: " + upperRange);
+        System.out.println("\nThere are: " + counter + " prime numbers from a total of: " + upperLimit);
     }
 }

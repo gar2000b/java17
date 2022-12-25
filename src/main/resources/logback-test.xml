@@ -1,0 +1,26 @@
+<configuration>
+
+  <appender name="ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>java17.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">        
+        <!-- daily rollover -->
+        <fileNamePattern>java17.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>5</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%date [%file:%line] [%-5level] %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <file>java17.log</file>
+    <encoder>
+      <pattern>%date [%file:%line] [%-5level] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="ROLLING_FILE_APPENDER" />
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
