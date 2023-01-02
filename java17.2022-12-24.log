@@ -1,8 +1,0 @@
-2022-12-24 22:33:30,669 [Main.java:17] [ERROR] Cannot read input from console in IDE
-java.lang.NullPointerException: Cannot read input from console in IDE
-	at com.onlineinteract.scanner.Main.main(Main.java:15)
-2022-12-24 22:33:30,675 [Main.java:18] [INFO ] Attempting to use Scanner
-2022-12-24 22:34:16,957 [Main.java:17] [ERROR] Cannot read input from console in IDE
-java.lang.NullPointerException: Cannot read input from console in IDE
-	at com.onlineinteract.scanner.Main.main(Main.java:15)
-2022-12-24 22:34:16,959 [Main.java:18] [INFO ] Attempting to use Scanner
