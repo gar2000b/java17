@@ -9,7 +9,7 @@ class Solution {
 
         while(num != 0) {
             /**
-             * Bitwise version (directly equivalent)
+             * Bitwise version (directly equivalent to the next x2 lines)
              * if((num & 1) == 0)
              *     num >>= 1;
              */
