@@ -1,4 +1,4 @@
-package com.onlineinteract.leetcode.richest_customer_wealth;
+package com.onlineinteract.leetcode.arrays.richest_customer_wealth;
 
 class Solution {
     public int maximumWealth(int[][] accounts) {

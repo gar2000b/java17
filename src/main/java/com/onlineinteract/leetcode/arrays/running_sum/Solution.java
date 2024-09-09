@@ -1,4 +1,4 @@
-package com.onlineinteract.leetcode.running_sum;
+package com.onlineinteract.leetcode.arrays.running_sum;
 
 import java.util.Arrays;
 
