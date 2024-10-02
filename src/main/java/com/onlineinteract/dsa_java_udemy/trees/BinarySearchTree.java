@@ -44,11 +44,11 @@ public class BinarySearchTree {
         Node currentNode = root;
 
         while (currentNode != null) {
-            if(value == currentNode.value) {
+            if (value == currentNode.value) {
                 return false;
             }
 
-            if(value < currentNode.value) {
+            if (value < currentNode.value) {
                 if (currentNode.left == null) {
                     currentNode.left = newNode;
                     return true;
@@ -58,7 +58,7 @@ public class BinarySearchTree {
                 }
             }
 
-            if(value > currentNode.value) {
+            if (value > currentNode.value) {
                 if (currentNode.right == null) {
                     currentNode.right = newNode;
                     return true;
@@ -70,6 +70,29 @@ public class BinarySearchTree {
         return false;
     }
 
+    private Node rInsert(Node currentNode, int value) {
+        if (currentNode == null) {
+            return new Node(value);
+        }
+
+        if (value < currentNode.value) {
+            currentNode.left = rInsert(currentNode.left, value);
+        } else if (value > currentNode.value) {
+            currentNode.right = rInsert(currentNode.right, value);
+        }
+
+        return currentNode;
+    }
+
+    public void rInsert(int value) {
+        if (root == null) {
+            root = new Node(value);
+            return;
+        }
+
+        rInsert(root, value);
+    }
+
     public boolean contains(int value) {
 
         if (root == null) {
@@ -79,20 +102,121 @@ public class BinarySearchTree {
         Node currentNode = root;
 
         while (currentNode != null) {
-            if(value == currentNode.value) {
+            if (value == currentNode.value) {
                 return true;
             }
 
-            if(value < currentNode.value) {
+            if (value < currentNode.value) {
                 currentNode = currentNode.left;
                 continue;
             }
 
-            if(value > currentNode.value) {
+            if (value > currentNode.value) {
                 currentNode = currentNode.right;
             }
         }
 
         return false;
     }
+
+    private boolean rContains(Node currentNode, int value) {
+        if (currentNode == null) {
+            return false;
+        }
+
+        if (currentNode.value == value) {
+            return true;
+        }
+
+        if (value < currentNode.value) {
+            return rContains(currentNode.left, value);
+        } else {
+            return rContains(currentNode.right, value);
+        }
+    }
+
+    public boolean rContains(int value) {
+        return rContains(root, value);
+    }
+
+    private Node deleteNode(Node currentNode, int value) {
+        if (currentNode == null) {
+            return null;
+        }
+
+        if (value < currentNode.value) {
+            currentNode.left = deleteNode(currentNode.left, value);
+        } else if (value > currentNode.value) {
+            currentNode.right = deleteNode(currentNode.right, value);
+        } else {
+            if (currentNode.left == null && currentNode.right == null) {
+                return null;
+            } else if (currentNode.left == null) {
+                currentNode = currentNode.right;
+            } else if (currentNode.right == null) {
+                currentNode = currentNode.left;
+            } else {
+                int subTreeMin = minValue(currentNode.right);
+                currentNode.value = subTreeMin;
+                currentNode.right = deleteNode(currentNode.right, subTreeMin);
+            }
+        }
+
+        return currentNode;
+    }
+
+    public void deleteNode(int value) {
+        root = deleteNode(root, value);
+    }
+
+    public int minValue(Node currentNode) {
+        while (currentNode.left != null) {
+            currentNode = currentNode.left;
+        }
+
+        return currentNode.value;
+    }
+
+    private Node sortedArrayToBST(int[] nums, int left, int right) {
+        // Base case: if the left index exceeds the right index, there's no element to process
+        if (left > right) {
+            return null;
+        }
+
+        // Find the middle element of the current segment of the array
+        int mid = left + (right - left) / 2;
+
+        // Create a new node with the middle element as its value
+        Node node = new Node(nums[mid]);
+
+        // Recursively build the left subtree using the left half of the array
+        node.left = sortedArrayToBST(nums, left, mid - 1);
+
+        // Recursively build the right subtree using the right half of the array
+        node.right = sortedArrayToBST(nums, mid + 1, right);
+
+        // Return the node which is now the root of the BST for this segment
+        return node;
+    }
+
+    public void sortedArrayToBST(int[] nums) {
+        this.root = sortedArrayToBST(nums, 0, nums.length - 1);
+    }
+
+    private Node invertTree(Node node) {
+        if(node == null) {
+            return null;
+        }
+
+        Node tmp = node.left;
+        node.left = invertTree(node.right);
+        node.right = invertTree(tmp);
+
+        return node;
+    }
+
+    public void invert() {
+        root = invertTree(root);
+    }
 }
+
