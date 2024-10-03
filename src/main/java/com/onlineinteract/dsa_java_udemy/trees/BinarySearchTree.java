@@ -1,5 +1,11 @@
 package com.onlineinteract.dsa_java_udemy.trees;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class BinarySearchTree {
     Node root;
 
@@ -204,7 +210,7 @@ public class BinarySearchTree {
     }
 
     private Node invertTree(Node node) {
-        if(node == null) {
+        if (node == null) {
             return null;
         }
 
@@ -217,6 +223,192 @@ public class BinarySearchTree {
 
     public void invert() {
         root = invertTree(root);
+    }
+
+    public ArrayList<Integer> BFS() {
+        Node currentNode = root;
+        Queue<Node> queue = new LinkedList<>();
+        ArrayList<Integer> results = new ArrayList<>();
+        queue.add(currentNode);
+
+        while (queue.size() > 0) {
+            currentNode = queue.remove();
+            results.add(currentNode.value);
+
+            if (currentNode.left != null) {
+                queue.add(currentNode.left);
+            }
+
+            if (currentNode.right != null) {
+                queue.add(currentNode.right);
+            }
+        }
+
+        return results;
+    }
+
+    public ArrayList<Integer> DFSPreOrder() {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        class Traverse {
+            Traverse(Node currentNode) {
+                results.add(currentNode.value);
+                if (currentNode.left != null) {
+                    new Traverse(currentNode.left);
+                }
+
+                if (currentNode.right != null) {
+                    new Traverse(currentNode.right);
+                }
+            }
+        }
+
+        new Traverse(root);
+
+        return results;
+    }
+
+    public ArrayList<Integer> DFSPostOrder() {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        class Traverse {
+            Traverse(Node currentNode) {
+                if (currentNode.left != null) {
+                    new Traverse(currentNode.left);
+                }
+
+                if (currentNode.right != null) {
+                    new Traverse(currentNode.right);
+                }
+                results.add(currentNode.value);
+            }
+        }
+
+        new Traverse(root);
+
+        return results;
+    }
+
+    public ArrayList<Integer> DFSInOrder() {
+        ArrayList<Integer> results = new ArrayList<>();
+
+        class Traverse {
+            Traverse(Node currentNode) {
+                if (currentNode.left != null) {
+                    new Traverse(currentNode.left);
+                }
+
+                results.add(currentNode.value);
+
+                if (currentNode.right != null) {
+                    new Traverse(currentNode.right);
+                }
+            }
+        }
+
+        new Traverse(root);
+
+        return results;
+    }
+
+    public ArrayList<Integer> DFSInOrderIterative() {
+        ArrayList<Integer> results = new ArrayList<>();
+        Stack<Node> stack = new Stack<>();
+        Node current = root;
+
+        // Traverse the tree iteratively using the stack
+        while (current != null || !stack.isEmpty()) {
+            // Reach the leftmost node of the current node
+            while (current != null) {
+                stack.push(current);  // Push current node onto the stack
+                current = current.left;  // Move to the left child
+            }
+
+            // Current must be null at this point, pop the top node from the stack
+            current = stack.pop();
+            results.add(current.value);  // Add the node's value to the results list
+
+            // Move to the right subtree
+            current = current.right;
+        }
+
+        return results;
+    }
+
+    public boolean isValidBST() {
+        ArrayList<Integer> results = DFSInOrder();
+
+        for (int i = 1; i < results.size(); i++) {
+            if (results.get(i) <= results.get(i - 1)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Integer kthSmallest(int k) {
+        if (root == null || k <= 0) return null;
+
+        Stack<Node> stack = new Stack<>();
+        Node current = root;
+
+        while (current != null || !stack.isEmpty()) {
+            // Go to the leftmost node and push all nodes along the path
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+
+            // Pop the top node from the stack and process it
+            current = stack.pop();
+            k--;  // Decrement k as we process each node in sorted order
+
+            // If k is 0, we found the kth smallest element
+            if (k == 0) {
+                return current.value;
+            }
+
+            // Move to the right subtree
+            current = current.right;
+        }
+
+        // If k is greater than the number of nodes in the BST
+        return null;
+    }
+
+    public Integer kthSmallestRecursion(int k) {
+        AtomicInteger K = new AtomicInteger(k);
+        AtomicInteger result = new AtomicInteger();
+
+        if (root == null || k <= 0) return null;
+
+        class Traverse {
+            Traverse(Node currentNode) {
+                if(K.get() == 0) {
+                    return;
+                }
+
+                if (currentNode.left != null) {
+                    new Traverse(currentNode.left);
+                }
+
+                K.set(K.get() - 1);
+
+                if(K.get() == 0) {
+                    result.set(currentNode.value);
+                    return;
+                }
+
+                if (currentNode.right != null) {
+                    new Traverse(currentNode.right);
+                }
+            }
+        }
+
+        new Traverse(root);
+
+        return result.get();
     }
 }
 

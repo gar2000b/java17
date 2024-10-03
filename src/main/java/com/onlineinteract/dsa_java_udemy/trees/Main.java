@@ -2,6 +2,9 @@ package com.onlineinteract.dsa_java_udemy.trees;
 
 import com.onlineinteract.utility.Print;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         BinarySearchTree bst = new BinarySearchTree(100);
@@ -140,5 +143,107 @@ public class Main {
         myBST.invert();
         myBST.printTree();
         Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+
+        System.out.println(myBST.BFS());
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+
+        System.out.println(myBST.DFSPreOrder());
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+
+        System.out.println(myBST.DFSPostOrder());
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+
+        System.out.println(myBST.DFSInOrder());
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+
+        System.out.println(myBST.DFSInOrderIterative());
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+
+        System.out.println("Is valid BST: " + myBST.isValidBST());
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+        myBST.printTree();
+
+        System.out.println("\nkthSmallest: " + myBST.kthSmallest(3));
+        Print.printSeparator();
+
+        myBST = new BinarySearchTree();
+        myBST.insert(47);
+        myBST.insert(21);
+        myBST.insert(76);
+        myBST.insert(18);
+        myBST.insert(27);
+        myBST.insert(52);
+        myBST.insert(82);
+        myBST.printTree();
+
+        System.out.println("\nkthSmallestRecursion: " + myBST.kthSmallestRecursion(3));
+        Print.printSeparator();
+
+        Arrays.sort(new Object[]{1});
+        ArrayList<Integer> l = new ArrayList<>();
+        double dd = 3.14;
     }
 }
