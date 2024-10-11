@@ -2,7 +2,9 @@ package com.onlineinteract.dsa_java_udemy.arrays;
 
 import com.onlineinteract.utility.Print;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -39,6 +41,12 @@ public class Main {
 
         myIntArray = new int[]{4, 6, 1, 7, 3, 2, 5};
         quickSort(myIntArray, 0, myIntArray.length - 1);
+        System.out.println(Arrays.toString(myIntArray));
+        Print.printSeparator();
+
+        myIntArray = new int[]{3, 2, 2, 3};
+        int length = removeElement(myIntArray, 3);
+        System.out.println("New length is: " + length);
         System.out.println(Arrays.toString(myIntArray));
         Print.printSeparator();
     }
@@ -170,5 +178,25 @@ public class Main {
             quickSort(array, left, pivotIndex - 1);
             quickSort(array, pivotIndex + 1, right);
         }
+    }
+
+    public static int removeElement(int[] nums, int val) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != val) {
+                list.add(nums[i]);
+            }
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            nums[i] = list.get(i);
+        }
+
+        return list.size();
     }
 }
