@@ -22,6 +22,25 @@ public class Main {
         insertionSort(myIntArray);
         System.out.println(Arrays.toString(myIntArray));
         Print.printSeparator();
+
+        int[] result = merge(new int[]{1, 3, 7, 8}, new int[]{2, 4, 5, 6});
+        System.out.println(Arrays.toString(result));
+        Print.printSeparator();
+
+        result = mergeSort(new int[]{3, 1, 4, 2});
+        System.out.println(Arrays.toString(result));
+        Print.printSeparator();
+
+        myIntArray = new int[]{4, 6, 1, 7, 3, 2, 5};
+        int returnedIndex = pivot(myIntArray, 0, myIntArray.length - 1);
+        System.out.println("Returned index: " + returnedIndex);
+        System.out.println(Arrays.toString(myIntArray));
+        Print.printSeparator();
+
+        myIntArray = new int[]{4, 6, 1, 7, 3, 2, 5};
+        quickSort(myIntArray, 0, myIntArray.length - 1);
+        System.out.println(Arrays.toString(myIntArray));
+        Print.printSeparator();
     }
 
     public static void bubbleSort(int[] array) {
@@ -56,13 +75,100 @@ public class Main {
 
     public static void insertionSort(int[] array) {
         for (int i = 1; i < array.length; i++) {
-            int tmp = array[i];
+            int valueToInsert = array[i];
             int j = i - 1;
-            while (j > -1 && tmp < array[j]) {
+            while (j > -1 && valueToInsert < array[j]) {
                 array[j + 1] = array[j];
-                array[j] = tmp;
+                array[j] = valueToInsert;
                 j--;
             }
+        }
+    }
+
+    public static int[] mergeSort(int[] array) {
+        /**
+         * Base Case
+         */
+        if (array.length == 1) {
+            return array;
+        }
+
+        int midIndex = array.length / 2;
+
+        /**
+         * Recursive Cases
+         */
+        int[] left = mergeSort(Arrays.copyOfRange(array, 0, midIndex));
+        int[] right = mergeSort(Arrays.copyOfRange(array, midIndex, array.length));
+
+        /**
+         * Return
+         */
+        return merge(left, right);
+    }
+
+    public static int[] merge(int[] array1, int[] array2) {
+        int i = 0, j = 0, k = 0;
+        int[] result = new int[array1.length + array2.length];
+
+        while (true) {
+            if (i < array1.length && j < array2.length) {
+                if (array1[i] < array2[j]) {
+                    result[k] = array1[i];
+                    i++;
+                } else {
+                    result[k] = array2[j];
+                    j++;
+                }
+                k++;
+                continue;
+            }
+
+            if (i < array1.length) {
+                result[k] = array1[i];
+                i++;
+                k++;
+                continue;
+            }
+
+            if (j < array2.length) {
+                result[k] = array2[j];
+                j++;
+                k++;
+                continue;
+            }
+
+            break;
+        }
+
+        return result;
+    }
+
+    private static void swap(int[] array, int firstIndex, int secondIndex) {
+        int tmp = array[firstIndex];
+        array[firstIndex] = array[secondIndex];
+        array[secondIndex] = tmp;
+    }
+
+    public static int pivot(int[] array, int pivotIndex, int endIndex) {
+        int swapIndex = pivotIndex;
+        for (int i = pivotIndex + 1; i <= endIndex; i++) {
+            if (array[i] < array[pivotIndex]) {
+                swapIndex++;
+                swap(array, swapIndex, i);
+            }
+        }
+
+        swap(array, pivotIndex, swapIndex);
+
+        return swapIndex;
+    }
+
+    public static void quickSort(int[] array, int left, int right) {
+        if (left < right) {
+            int pivotIndex = pivot(array, left, right);
+            quickSort(array, left, pivotIndex - 1);
+            quickSort(array, pivotIndex + 1, right);
         }
     }
 }

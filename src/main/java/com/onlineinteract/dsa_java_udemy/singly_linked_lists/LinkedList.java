@@ -305,7 +305,7 @@ public class LinkedList {
     }
 
     public Node findKthFromEnd(int k) {
-        if(head == null)
+        if (head == null)
             return null;
 
         Node p1 = head;
@@ -313,7 +313,7 @@ public class LinkedList {
         int p1Index = 1;
         int p2Index = 1;
 
-        while(p1.next != null) {
+        while (p1.next != null) {
             if (p2Index == k) {
                 p2 = p2.next;
             } else {
@@ -324,17 +324,17 @@ public class LinkedList {
             p1Index++;
         }
 
-        if(p1Index < k)
+        if (p1Index < k)
             return null;
 
         return p2;
     }
 
     public void partitionList(int x) {
-        if(head == null)
+        if (head == null)
             return;
 
-        if(head.next == null) {
+        if (head.next == null) {
             return;
         }
 
@@ -344,9 +344,9 @@ public class LinkedList {
         Node t2 = null;
         Node tmp = head;
 
-        while(tmp != null) {
-            if(tmp.value < x) {
-                if(h1 == null) {
+        while (tmp != null) {
+            if (tmp.value < x) {
+                if (h1 == null) {
                     h1 = tmp;
                     t1 = tmp;
                     tmp = tmp.next;
@@ -357,7 +357,7 @@ public class LinkedList {
                 t1 = tmp;
                 tmp = tmp.next;
             } else {
-                if(h2 == null) {
+                if (h2 == null) {
                     h2 = tmp;
                     t2 = tmp;
                     tmp = tmp.next;
@@ -370,7 +370,7 @@ public class LinkedList {
             }
         }
 
-        if(t1 == null || t2 == null) {
+        if (t1 == null || t2 == null) {
             return;
         }
 
@@ -380,11 +380,11 @@ public class LinkedList {
     }
 
     public void removeDuplicates() {
-        if(head == null) {
+        if (head == null) {
             return;
         }
 
-        if(head.next == null) {
+        if (head.next == null) {
             return;
         }
 
@@ -392,8 +392,8 @@ public class LinkedList {
         Node tmp = head;
         Node previous = null;
 
-        while(tmp != null) {
-            if(memory.contains(tmp.value)) {
+        while (tmp != null) {
+            if (memory.contains(tmp.value)) {
                 Node remove = tmp;
                 tmp = tmp.next;
                 remove.next = null;
@@ -408,14 +408,14 @@ public class LinkedList {
     }
 
     public int binaryToDecimal() {
-        if(head == null) {
+        if (head == null) {
             return 0;
         }
 
         int num = 0;
         Node tmp = head;
 
-        while(tmp != null) {
+        while (tmp != null) {
             num = (num * 2) + tmp.value;
             tmp = tmp.next;
         }
@@ -424,15 +424,15 @@ public class LinkedList {
     }
 
     public void reverseBetween(int m, int n) {
-        if(head == null) {
+        if (head == null) {
             return;
         }
 
-        if(head.next == null) {
+        if (head.next == null) {
             return;
         }
 
-        if(m < 0 || n >= length) {
+        if (m < 0 || n >= length) {
             return;
         }
 
@@ -444,21 +444,21 @@ public class LinkedList {
         Node next = tmp.next;
 
         while (i <= n) {
-            if(i == m - 1) {
+            if (i == m - 1) {
                 p1 = tmp;
             }
 
-            if(i == m) {
+            if (i == m) {
                 p2 = tmp;
                 tmp.next = null;
             }
 
-            if(i > m && i <= n) {
+            if (i > m && i <= n) {
                 tmp.next = prev;
             }
 
-            if(i == n) {
-                if(p1 != null) {
+            if (i == n) {
+                if (p1 != null) {
                     p1.next = tmp;
                 } else {
                     head = tmp;
@@ -467,7 +467,7 @@ public class LinkedList {
                 p2.next = next;
             }
 
-            if(next == null) {
+            if (next == null) {
                 break;
             }
 
@@ -476,6 +476,161 @@ public class LinkedList {
             next = tmp.next;
             i++;
         }
+    }
+
+    public void bubbleSort() {
+        if (length == 0 || length == 1) {
+            return;
+        }
+
+        Node p1 = head;
+        Node p2 = p1.next;
+
+        for (int i = length - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (p1.value > p2.value) {
+                    int tmp = p1.value;
+                    p1.value = p2.value;
+                    p2.value = tmp;
+                }
+
+                p1 = p2;
+                p2 = p2.next;
+            }
+
+            p1 = head;
+            p2 = p1.next;
+        }
+    }
+
+    public void selectionSort() {
+        if (length == 0 || length == 1) {
+            return;
+        }
+
+        Node p1 = head;
+        Node p2 = p1.next;
+
+        while (p1 != null) {
+            Node min = p1;
+            while (p2 != null) {
+                if (p2.value < min.value) {
+                    min = p2;
+                }
+                p2 = p2.next;
+            }
+
+            if (min.value < p1.value) {
+                int tmp = p1.value;
+                p1.value = min.value;
+                min.value = tmp;
+            }
+
+            if (p1 != null)
+                p1 = p1.next;
+            if (p1 != null)
+                p2 = p1.next;
+        }
+    }
+
+    public void insertionSort() {
+        // Check if the list has 0 or 1 node
+        if (head == null || head.next == null) {
+            return; // Already sorted
+        }
+
+        // Initialize sorted list with the first node of the original list
+        /**
+         * We basically take the first/head node to become the sortedListHead for our newly "sortedList", and then
+         * take the next node to become the unsortedListHead representing our "unsortedList".
+         *
+         * The unsortedListHead will essentially become the remaining linked list that we have to sort with
+         * insertionSort where we constantly update the sortedListHead until it is a complete sorted list.
+         */
+        Node sortedListHead = head;
+        Node unsortedListHead = head.next;
+
+        // Separate the sorted part from the unsorted part
+        sortedListHead.next = null;
+
+        // Iterate through the unsorted part
+        /**
+         * The main take-away here, is that we are going to update the "sortedList" with the newly inserted value from
+         * the next value of the "unsortedList".
+         *
+         * If the newly inserted value comes before the sortedListHead's value, then it's a simple O(1) insertion.
+         *
+         * Otherwise, we need to search for the position to insert to (or between), and then insert.
+         */
+        while (unsortedListHead != null) {
+            Node nodeToInsert = unsortedListHead;
+            unsortedListHead = unsortedListHead.next;
+
+            // Insert nodeToInsert into the sorted list
+            if (nodeToInsert.value < sortedListHead.value) {
+                // Insert before the sorted head
+                nodeToInsert.next = sortedListHead;
+                sortedListHead = nodeToInsert;
+            } else {
+                // Find the correct position to insert within the sorted part
+                Node searchPointer = sortedListHead;
+                while (searchPointer.next != null && searchPointer.next.value < nodeToInsert.value) {
+                    searchPointer = searchPointer.next;
+                }
+
+                // Insert nodeToInsert after searchPointer
+                nodeToInsert.next = searchPointer.next;
+                searchPointer.next = nodeToInsert;
+            }
+        }
+
+        // Update the head and tail pointers of the linked list
+        head = sortedListHead;
+
+        // Update tail pointer
+        Node tailPointer = sortedListHead;
+        while (tailPointer.next != null) {
+            tailPointer = tailPointer.next;
+        }
+        tail = tailPointer;
+    }
+
+    public void merge(LinkedList otherList) {
+        if (this.getLength() == 0 || otherList.getLength() == 0) {
+            return;
+        }
+
+        Node node = otherList.head;
+        Node from = head;
+        Node prev = null;
+
+        while (node != null) {
+            Node nodeToInsert = node;
+            node = node.next;
+
+            if (nodeToInsert.value < head.value) {
+                nodeToInsert.next = head;
+                head = nodeToInsert;
+            } else {
+                Node searchPointer = from;
+                while (searchPointer != null && searchPointer.value < nodeToInsert.value) {
+                    prev = searchPointer;
+                    searchPointer = searchPointer.next;
+                }
+
+                nodeToInsert.next = searchPointer;
+                if (prev != null) {
+                    prev.next = nodeToInsert;
+                }
+                from = nodeToInsert;
+            }
+        }
+
+        Node tailPointer = head;
+        while (tailPointer.next != null) {
+            tailPointer = tailPointer.next;
+        }
+        tail = tailPointer;
     }
 
     public static void main(String[] args) {

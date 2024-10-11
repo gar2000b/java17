@@ -199,5 +199,55 @@ public class Main {
         linkedList.reverseBetween(0, 4);
         linkedList.printAll();
         Print.printSeparator();
+
+        System.out.println("Calling bubbleSort()\n");
+        linkedList.makeEmpty();
+        linkedList.append(4);
+        linkedList.append(2);
+        linkedList.append(6);
+        linkedList.append(5);
+        linkedList.append(1);
+        linkedList.append(3);
+        linkedList.bubbleSort();
+        linkedList.printAll();
+        Print.printSeparator();
+
+        System.out.println("Calling selectionSort()\n");
+        linkedList.makeEmpty();
+        linkedList.append(4);
+        linkedList.append(2);
+        linkedList.append(6);
+        linkedList.append(5);
+        linkedList.append(1);
+        linkedList.append(3);
+        linkedList.selectionSort();
+        linkedList.printAll();
+        Print.printSeparator();
+
+        System.out.println("Calling insertionSort()\n");
+        linkedList.makeEmpty();
+        linkedList.append(4);
+        linkedList.append(2);
+        linkedList.append(6);
+        linkedList.append(5);
+        linkedList.append(1);
+        linkedList.append(3);
+        linkedList.insertionSort();
+        linkedList.printAll();
+        Print.printSeparator();
+
+        linkedList.makeEmpty();
+        linkedList.append(1);
+        linkedList.append(3);
+        linkedList.append(5);
+        linkedList.append(7);
+        LinkedList otherList = new LinkedList(2);
+//        otherList.makeEmpty();
+        otherList.append(4);
+        otherList.append(6);
+        otherList.append(8);
+        linkedList.merge(otherList);
+        linkedList.printAll();
+        Print.printSeparator();
     }
 }
