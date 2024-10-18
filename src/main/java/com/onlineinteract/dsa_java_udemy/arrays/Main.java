@@ -49,6 +49,39 @@ public class Main {
         System.out.println("New length is: " + length);
         System.out.println(Arrays.toString(myIntArray));
         Print.printSeparator();
+
+        myIntArray = new int[]{5, 3, 8, 1, 6, 9};
+//        myIntArray = new int[]{0, 0, 0, 0, 0};
+//        myIntArray = new int[]{5};
+//        myIntArray = new int[]{};
+        int[] maxMin = findMaxMin(myIntArray);
+        System.out.println(Arrays.toString(maxMin));
+        Print.printSeparator();
+
+        String[] myStringArray = new String[]{"apple", "kiwina", "banana", "kiwi", "pear"};
+        System.out.println(findLongestString(myStringArray));
+        Print.printSeparator();
+
+        myIntArray = new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+        int newLength = removeDuplicates(myIntArray);
+        System.out.println("newLength: " + newLength);
+        Print.printSeparator();
+
+        myIntArray = new int[]{7, 1, 5, 3, 6, 4};
+        int profit = maxProfit(myIntArray);
+        System.out.println("Profit: " + profit);
+        Print.printSeparator();
+
+        myIntArray = new int[]{1, 2, 3, 4, 5, 6, 7};
+        rotate(myIntArray, 3);
+        System.out.println(Arrays.toString(myIntArray));
+        Print.printSeparator();
+
+        myIntArray = new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4};
+//        myIntArray = new int[]{};
+        int maxSum = maxSubarray(myIntArray);
+        System.out.println("maxSum: " + maxSum);
+        Print.printSeparator();
     }
 
     public static void bubbleSort(int[] array) {
@@ -198,5 +231,117 @@ public class Main {
         }
 
         return list.size();
+    }
+
+    public static int[] findMaxMin(int[] myList) {
+        if (myList.length == 0) {
+            return new int[]{0, 0};
+        }
+
+        int[] returnArr = new int[2];
+        int maxValue = myList[0];
+        int minValue = myList[0];
+
+        for (int i = 0; i < myList.length; i++) {
+            if (myList[i] < minValue) {
+                minValue = myList[i];
+            }
+
+            if (myList[i] > maxValue) {
+                maxValue = myList[i];
+            }
+        }
+
+        returnArr[0] = maxValue;
+        returnArr[1] = minValue;
+
+        return returnArr;
+    }
+
+    public static String findLongestString(String[] stringList) {
+        if (stringList.length == 0) {
+            return "";
+        }
+
+        String longestString = "";
+
+        for (String item : stringList) {
+            if (item.length() > longestString.length()) {
+                longestString = item;
+            }
+        }
+
+        return longestString;
+    }
+
+    public static int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        int p1 = 0;
+        int p2 = 1;
+        int newlength = 1;
+
+        while (p2 < nums.length) {
+            if (nums[p2] == nums[p1]) {
+                p2++;
+            } else {
+                nums[p1 + 1] = nums[p2];
+                p2++;
+                p1++;
+                newlength++;
+            }
+        }
+
+        return newlength;
+    }
+
+    public static int maxProfit(int[] prices) {
+        if (prices.length <= 1) {
+            return 0;
+        }
+
+        int profit = 0;
+        int buy = prices[0];
+
+        for (int i = 1; i < prices.length; i++) {
+            int tmpProfit = prices[i] - buy;
+            if (tmpProfit >= profit) {
+                profit = tmpProfit;
+            } else if (tmpProfit < 0) {
+                buy = prices[i];
+            }
+        }
+
+        return profit;
+    }
+
+    public static void rotate(int[] nums, int k) {
+        int index = 0;
+        int nextValue = nums[index];
+        for (int i = 0; i < nums.length; i++) {
+            int newIndex = (index + k) % nums.length;
+            int tmp = nums[newIndex];
+            nums[newIndex] = nextValue;
+            nextValue = tmp;
+            index = newIndex;
+        }
+    }
+
+    public static int maxSubarray(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        int currentSum = nums[0];
+        int maxSum = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            currentSum = Math.max(nums[i], currentSum + nums[i]);
+            maxSum = Math.max(maxSum, currentSum);
+        }
+
+        return maxSum;
     }
 }
