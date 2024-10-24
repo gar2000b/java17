@@ -1,0 +1,121 @@
+TLS Handshake and Session Setup Breakdown
+
+1. Validate Service Domain
+
+User requests secure connection:
+The user initiates a request for a secure website by entering a URL starting with "https" (e.g., https://example.com). This signals the need for TLS encryption to protect the communication.
+
+Browser opens a TCP connection:
+The browser connects to the web server on port 443, the standard port for HTTPS.
+
+Server Hello and TLS Certificate Exchange:
+
+The web server responds with a Server Hello message. This includes the TLS version (e.g., TLS 1.3) and a list of supported cryptographic algorithms (cipher suites).
+The server also sends its X.509 TLS certificate, containing the server's public key and a digital signature signed by a Certificate Authority (CA) using RSA.
+Browser retrieves the CA's public key:
+The browser queries the CA to fetch the public key needed to validate the server’s certificate.
+
+Browser validates the certificate:
+
+Using the CA’s public key, the browser decrypts the certificate’s digital signature to reveal the hash originally computed by the CA.
+The browser re-computes the hash of the certificate contents using SHA-256 to ensure they match. If the hashes are identical, the certificate is valid.
+Certificate Validation Outcome:
+
+If the certificate is valid, the handshake continues.
+If the certificate is invalid, the browser shows a security warning to the user, and the connection is terminated.
+
+2. Prove Server Identity and Begin Encryption Setup
+
+Browser generates an ECDHE key pair:
+The browser generates a public and private key pair using Ephemeral Elliptic Curve Diffie-Hellman (ECDHE), which ensures Perfect Forward Secrecy (PFS). This means every session uses a unique key, so even if a session key is compromised later, it cannot decrypt past communications.
+
+Client Hello with ECDHE public key:
+The browser sends a Client Hello message to the web server, which includes the browser's ECDHE public key.
+
+Server generates its ECDHE key pair:
+Upon receiving the client’s public key, the web server generates its own ECDHE key pair.
+
+Server sends its ECDHE public key:
+The web server responds with its ECDHE public key.
+
+Hash the handshake data locally:
+Both the browser and the web server locally hash the handshake data using SHA-256. This ensures integrity and confirms that the handshake process has not been tampered with.
+
+Server signs the hash:
+The server signs the hashed data using its private key, ensuring that the handshake data is authentic and hasn't been altered.
+
+Browser verifies the signature:
+The browser uses the server's public key (from the certificate) to verify the signature. If the signature is valid, the handshake continues; otherwise, the connection is terminated with a security warning.
+
+3. Continue Encryption Setup
+
+Compute shared secret using ECDHE:
+
+Both the browser and web server use their ECDHE private keys and the other party’s public key to compute a shared secret.
+The shared secret is identical for both parties and forms the foundation for generating the symmetric session key. This is what ensures that both sides can communicate securely without further public key exchanges.
+Derive AES-256 session key:
+Using the shared secret, both the browser and the web server independently derive the symmetric AES-256 session key. This key will be used to encrypt the actual communication between the browser and the web server.
+
+Finished messages exchanged:
+Both parties send Finished messages, which contain SHA-256 hashes of the handshake data. This serves as a final confirmation that both sides are ready to begin encrypted communication.
+
+4. Application Data Transmission
+
+User sends a request:
+The user interacts with the website, for example, by entering a URL like GET /index.html.
+
+Browser sends an encrypted request:
+
+The browser encrypts the request using AES-256-GCM, ensuring that the content is confidential.
+The request also includes an HMAC-SHA-256 to guarantee the integrity of the message.
+Web server responds with encrypted content:
+The web server sends back the HTML content of the requested webpage, also encrypted with AES-256-GCM and protected with HMAC-SHA-256.
+
+Browser displays the webpage:
+The browser decrypts the response and renders the HTML content for the user to see.
+
+5. Close TLS Session
+
+TLS session termination:
+Once the data exchange is complete, the browser sends a signal to close the TLS session.
+Both the browser and server discard the session keys, ensuring that the keys cannot be reused in the future.
+Conclusion
+This TLS sequence ensures:
+
+Authentication: The server's identity is confirmed through its certificate.
+Confidentiality: The AES-256-GCM encryption ensures data cannot be read by unauthorized parties.
+Integrity: HMAC-SHA-256 guarantees that data isn't altered during transmission.
+Forward Secrecy: ECDHE ensures that even if session keys are compromised, past communications remain secure.
+
+----
+
+More info on CA certificates:
+
+How Browsers Handle CA Certificates
+Pre-installed Trusted Certificate Authorities (Root CAs):
+
+Browsers and operating systems come with a pre-installed list of trusted root certificates from well-known Certificate Authorities (CAs) (e.g., DigiCert, GlobalSign, Let's Encrypt).
+This list of trusted CAs is called the Certificate Store.
+On Windows: Managed by the operating system and accessible to all browsers.
+On macOS and iOS: Managed by Apple’s keychain.
+On Linux: Managed by the distribution's package management tools (like OpenSSL’s cert.pem).
+Certificate Chain Validation:
+
+When a browser receives a certificate from a web server, it doesn’t need to fetch the root CA’s public key from the internet. Instead, it:
+Extracts the public key from the locally stored root certificate.
+Uses this public key to validate the digital signature on the server’s certificate.
+Intermediate CA Certificates:
+
+If the server’s certificate is issued by an intermediate CA (common practice for security reasons), the browser must validate each certificate in the chain.
+Sometimes, intermediate certificates are included with the server’s response. If not, the browser may fetch missing intermediate certificates from public repositories or the server itself.
+Fallbacks and Certificate Revocation Checking:
+
+If the certificate is not found locally or the browser cannot verify it (e.g., an expired or unrecognized certificate), the browser may attempt to retrieve missing certificates from online repositories.
+Additionally, the browser may perform a certificate revocation check by consulting:
+Online Certificate Status Protocol (OCSP) servers.
+Certificate Revocation Lists (CRLs).
+In Summary: What Happens Internally
+In most cases, the root CA public key is already stored locally within the browser or OS, so no network request is required to fetch it.
+If the browser lacks an intermediate certificate, it may try to download it automatically.
+Revocation checks may involve contacting the CA to ensure the certificate is still valid.
+This internal behavior ensures that certificate validation is fast and efficient, while still being secure.

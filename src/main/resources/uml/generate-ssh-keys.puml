@@ -1,0 +1,37 @@
+@startuml
+title SSH Key Pair Generation and Connection Setup Flow (Activity Diagram)
+
+start
+
+:User initiates key generation;
+-> [A] Generate Public/Private Key Pair;
+:Command: `ssh-keygen -t rsa -b 4096`;
+'-> :User stores keys locally in `~/.ssh/`;
+note right
+  - private key file: `~ /.ssh/id_rsa`
+  - public key file: `~ /.ssh/id_rsa.pub`
+end note
+
+-> [B] Transfer Public Key to Server;
+:Command: `ssh-copy-id user@hostname.local`;
+
+-> [C] Verify Permissions;
+:Ensure `~ /.ssh/authorized_keys` on server
+is owned by user and has correct permissions;
+note right
+  - authorized keys file: `~ /.ssh/authorized_keys`
+end note
+
+-> :User tests connection;
+repeat
+    :Command: `ssh user@hostname.local`;
+    backward:Debug issues: Check keys, permissions, and config;
+repeat while (Connection Successful?) is (no) not (yes)
+:Login established with key-based authentication;
+note right
+  User should be logged in successfully
+  with no password prompt
+end note
+stop
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+actor Browser
+participant WebServer
+
+Browser -> WebServer: HTTP GET /index.html
+activate WebServer
+WebServer -> WebServer: Process request
+WebServer -> Browser: HTTP 200 OK + HTML Content
+deactivate WebServer
+Browser -> Browser: Render Web Page
+@enduml

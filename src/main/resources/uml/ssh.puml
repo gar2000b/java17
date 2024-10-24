@@ -1,0 +1,64 @@
+@startuml
+title SSH (Secure Shell) Protocol - Authentication and Encrypted Session Flow (Sequence Diagram)
+
+legend top
+  ECDH: Elliptic Curve Diffie-Hellman
+  AES: Advanced Encryption Standard
+  ECDSA: Elliptic Curve Digital Signature Algorithm
+end legend
+
+actor User
+participant Client
+participant Server
+
+User -> Client: Initiate SSH Connection
+Client -> Server: TCP Connection on Port 22
+activate Client
+activate Server
+
+Server -> Client: SSH Protocol Version Exchange
+Client -> Client: Generate ECDH Key Pair
+Client -> Server: Send Key Exchange Init (ECDH Parameters) \nwith Public ECDH Key
+Server -> Server: Generate ECDH Key Pair
+Server -> Client: Send ECDH Public Key + Public Host Key
+
+Client -> Client: Compute Shared Secret (ECDH)
+Server -> Server: Compute Shared Secret (ECDH)
+
+Server -> Server: Derive Symmetric AES Session Key
+Client -> Client: Derive Symmetric AES Session Key
+
+Server -> Client: Encryption Established (Symmetric Key Active)
+deactivate Server
+
+deactivate Client
+
+alt Public Key Authentication
+Client -> Server: Request Authentication
+activate Client
+activate Server
+
+  Server -> Client: Send Challenge (nonce) - proof of private key ownership
+  Client -> Client: Sign Challenge with Private Key (ECDSA)
+  Client -> Server: Send Signed Challenge
+  Server -> Server: Verify Signature with \nClients Public Key\nstored previously (ECDSA)
+else Password Authentication
+User -> Client: Enter Password
+  Client -> Server: Send Encrypted Password
+  Server -> Server: Verify Password
+end
+
+Server -> Client: Authentication Success
+deactivate Server
+deactivate Client
+
+User -> Client: Enter "ls -l" Command
+Client -> Server: Encrypted Command (AES): "ls -l"
+activate Client
+activate Server
+Server -> Client: Encrypted Response (AES): Directory Listing
+deactivate Server
+
+Client -> Server: Close SSH Session
+deactivate Client
+@enduml

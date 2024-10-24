@@ -1,0 +1,101 @@
+@startuml
+title TLS (Transport Layer Security) Protocol - Handshake and Encrypted Session Flow (Sequence Diagram)
+
+legend top
+  TLS: Transport Layer Security
+  CA: Certificate Authority
+  RSA: Rivest–Shamir–Adleman (Asymmetric Algorithm)
+  ECDHE: Ephemeral Elliptic Curve Diffie-Hellman (Key Exchange with PFS)
+  AES: Advanced Encryption Standard (Symmetric Encryption)
+  SHA: Secure Hash Algorithm (Hashing for Integrity)
+end legend
+
+actor User
+participant Browser
+participant WebServer
+actor CA
+
+== Validate Service Domain ==
+
+User -> Browser: Request Secure Website (https://example.com)
+Browser -> WebServer: TCP Connection on Port 443
+activate Browser
+activate WebServer
+
+WebServer -> Browser: Sends back Server Hello, TLS 1.3, and a list of\nsupported cryptographic algorithms
+WebServer -> Browser: Sends back its X.509 TLS Certificate \n(including a Digital Signature Signed by CA with RSA)
+
+Browser -> CA: Fetch CA's Public Key for X.509 TLS Certificate
+activate CA
+CA -> Browser: Responds with Public Key for X.509 TLS Certificate
+deactivate CA
+
+Browser -> Browser: Validate Certificate Signature \n(using CA's Public Key) by decrypting it; yielding the hash\nthe CA computed when issuing the certificate
+Browser -> Browser: Hash Certificate Contents \nwith SHA-256 for Verification with the same fields the CA\nused when computing the original hash for the certificate's\ndigital signature.
+
+alt Valid Certificate
+  Browser -> Browser: Certificate Validated (compares the hashes)
+else Invalid Certificate
+  Browser -> User: Display Security Warning
+  deactivate Browser
+  deactivate WebServer
+  return
+end
+
+== Prove Server Identity and begin Encryption Setup ==
+
+Browser -> Browser: Generate ECDHE Key Pair (Ephemeral)
+activate Browser
+Browser -> WebServer: Send Client Hello \nwith ECDHE Public Key
+activate WebServer
+
+WebServer -> WebServer: Generate ECDHE Key Pair (Ephemeral)
+WebServer -> Browser: Send ECDHE Public Key
+
+Browser -> Browser: Locally Hash Handshake Data with SHA-256
+WebServer -> WebServer: Locally Hash Handshake Data with SHA-256
+WebServer -> Browser: Send Signature of Hashed Data \n(Signed with TLS Private Key)
+deactivate WebServer
+
+Browser -> Browser: Verify Signature \n(using Public Key from Certificate)
+
+alt Valid Signature
+  Browser -> Browser: Proceed with handshake and continue encryption setup
+else Invalid Signature
+  Browser -> User: Display Security Warning
+  deactivate Browser
+  return
+end
+
+== Continue Encryption Setup ==
+
+Browser -> Browser: Compute Shared Secret (ECDHE)
+activate Browser
+WebServer -> WebServer: Compute Shared Secret (ECDHE)
+activate WebServer
+
+WebServer -> WebServer: Derive Symmetric AES-256 Session Key
+Browser -> Browser: Derive Symmetric AES-256 Session Key
+
+Browser -> WebServer: Finished Message (Contains SHA-256 Hash of Handshake)
+WebServer -> Browser: Finished Message (Contains SHA-256 Hash of Handshake)
+
+deactivate WebServer
+Browser -> User: Connection Established (HTTPS Secure)
+deactivate Browser
+
+== Application Data Transmission ==
+
+User -> Browser: Enter Request (GET /index.html)
+activate Browser
+Browser -> WebServer: Encrypted Request (AES-256-GCM): GET /index.html \n(with HMAC-SHA-256 for Integrity)
+activate WebServer
+
+WebServer -> Browser: Encrypted Response (AES-256-GCM): HTML Content \n(with HMAC-SHA-256 for Integrity)
+deactivate WebServer
+
+Browser -> User: Display Webpage
+deactivate Browser
+
+Browser -> WebServer: Close TLS Session
+@enduml

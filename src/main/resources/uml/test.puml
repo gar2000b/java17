@@ -1,0 +1,11 @@
+@startuml
+
+start
+
+repeat
+  :read data;
+  :generate diagrams;
+repeat while (more data?) is (no) not (yes)
+  :Login established with key-based authentication;
+  stop
+@enduml
