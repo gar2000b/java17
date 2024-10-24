@@ -1,4 +1,6 @@
 What are Digital Signatures?
+----------------------------
+
 A digital signature is a cryptographic method used to ensure the authenticity, integrity, and non-repudiation of data. It is essentially the digital equivalent of a handwritten signature or a wax seal, ensuring that the data has not been altered and verifying the identity of the sender.
 
 How Digital Signatures Work
@@ -27,3 +29,12 @@ Email Signing: Verify the authenticity of the sender (e.g., with PGP or S/MIME).
 Software Distribution: Verify that downloaded software has not been tampered with (e.g., signed binaries).
 Blockchain: Digital signatures ensure the integrity and ownership of transactions.
 In TLS, digital signatures are critical for validating the authenticity of the server's certificate during the handshake, ensuring that the user connects to the legitimate server.
+
+Extra Notes:
+------------
+
+This encryption with the private key isn't about "hiding" the signature (since the public key can decrypt it), but rather ensures that only the owner of the private key could have generated it. So it's about proving ownership and identity of the sender.
+
+Hashing the data ensures that only a small, fixed-size hash is signed rather than the entire payload, improving efficiency.
+
+When someone encrypts a hash with their private key, they create a digital signature. Since the private key is secret and known only to the owner, this process proves the data originated from them.

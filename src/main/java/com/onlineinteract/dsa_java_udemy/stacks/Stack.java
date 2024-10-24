@@ -2,7 +2,8 @@ package com.onlineinteract.dsa_java_udemy.stacks;
 
 public class Stack {
     private Node top;
-    private int height;
+    public int height;
+    private String name;
 
     class Node {
         int value;
@@ -11,6 +12,11 @@ public class Stack {
         Node(int value) {
             this.value = value;
         }
+    }
+
+    public Stack() {
+        top = null;
+        height = 0;
     }
 
     public Stack(int value) {
@@ -22,12 +28,14 @@ public class Stack {
     public void printStack() {
         Node tmp = top;
 
-        System.out.println("Stack:\n");
+        System.out.println(name + "\n");
 
         while (tmp != null) {
             System.out.println(tmp.value);
             tmp = tmp.next;
         }
+
+        System.out.println();
     }
 
     public void getTop() {
@@ -41,13 +49,13 @@ public class Stack {
     public void push(int value) {
         Node newNode = new Node(value);
 
-        if(height == 0) {
+        if (height == 0) {
             top = newNode;
             height++;
             return;
         }
 
-        if(height > 0) {
+        if (height > 0) {
             newNode.next = top;
             top = newNode;
             height++;
@@ -55,7 +63,7 @@ public class Stack {
     }
 
     public Node pop() {
-        if(height == 0) {
+        if (height == 0) {
             return null;
         }
 
@@ -72,5 +80,13 @@ public class Stack {
         height--;
 
         return tmp;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -1,0 +1,12 @@
+Encryption and Decryption
+-------------------------
+
+"encryption and decryption" is commonly used to describe the process of scrambling and unscrambling data to ensure confidentiality and controlled access.
+
+Here’s the distinction:
+
+Encryption: Converts plaintext (readable data) into ciphertext (unreadable data) using an encryption key.
+Decryption: Converts ciphertext back to plaintext using the corresponding decryption key.
+Together, encryption and decryption form the core of confidential communication systems, ensuring that only authorized parties can read the transmitted information.
+
+While cryptography is the broader field encompassing these operations along with hashing, digital signatures, and key management, "encryption and decryption" specifically refers to the act of concealing information and restoring it to its original state for secure communication. This term is precise for discussions about the confidentiality aspect of data protection.

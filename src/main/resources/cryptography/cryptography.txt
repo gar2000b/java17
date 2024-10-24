@@ -1,0 +1,19 @@
+Cryptography Overview
+---------------------
+
+Cryptography is the science and practice of secure communication. It includes techniques to protect information from unauthorized access or alteration.
+
+It covers:
+
+Encryption and Decryption: Ensuring confidentiality by transforming data into an unreadable form and reversing it with the correct key.
+
+Digital Signatures: Verifying the authenticity of data.
+
+Hashing: Ensuring integrity by creating fixed-size digests of data.
+
+Key Exchange Protocols: Securely exchanging cryptographic keys over untrusted channels.
+
+Cryptography also encompasses various algorithms, protocols, and frameworks for both data confidentiality (e.g., AES, RSA) and authentication and integrity (e.g., SHA-256, HMAC).
+
+Conclusion
+The term cryptography serves as the broad umbrella covering all aspects of secure data transmission, including encryption, decryption, signatures, and more.
