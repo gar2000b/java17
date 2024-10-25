@@ -38,6 +38,21 @@ public class Stack {
         System.out.println();
     }
 
+    public void printTower() {
+        Node tmp = top;
+
+        System.out.print(name + " - ");
+
+        String tower = "";
+
+        while (tmp != null) {
+            tower = tmp.value + " " + tower;
+            tmp = tmp.next;
+        }
+
+        System.out.println(tower);
+    }
+
     public void getTop() {
         System.out.println("Top: " + top.value);
     }
@@ -88,5 +103,12 @@ public class Stack {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int peek() {
+        if (top == null)
+            return 0;
+
+        return top.value;
     }
 }
