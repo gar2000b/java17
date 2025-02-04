@@ -1,0 +1,16 @@
+graph TD;
+    Iter8["Iteration 8: n = 4<br>Start: 1 -> End: 3"] --> Iter4["Iteration 4: n = 3<br>Start: 1 -> End: 2"]
+    Iter4 --> Iter2["Iteration 2: n = 2<br>Start: 1 -> End: 3"]
+    Iter2 --> Iter1["Iteration 1: n = 1<br>Start: 1 -> End: 2"]
+    Iter2 --> Iter3["Iteration 3: n = 1<br>Start: 2 -> End: 3"]
+    Iter4 --> Iter6["Iteration 6: n = 2<br>Start: 3 -> End: 2"]
+    Iter6 --> Iter5["Iteration 5: n = 1<br>Start: 3 -> End: 1"]
+    Iter6 --> Iter7["Iteration 7: n = 1<br>Start: 1 -> End: 2"]
+
+    Iter8 --> Iter12["Iteration 12: n = 3<br>Start: 2 -> End: 3"]
+    Iter12 --> Iter10["Iteration 10: n = 2<br>Start: 2 -> End: 1"]
+    Iter10 --> Iter9["Iteration 9: n = 1<br>Start: 2 -> End: 3"]
+    Iter10 --> Iter11["Iteration 11: n = 1<br>Start: 3 -> End: 1"]
+    Iter12 --> Iter14["Iteration 14: n = 2<br>Start: 1 -> End: 3"]
+    Iter14 --> Iter13["Iteration 13: n = 1<br>Start: 1 -> End: 2"]
+    Iter14 --> Iter15["Iteration 15: n = 1<br>Start: 2 -> End: 3"]

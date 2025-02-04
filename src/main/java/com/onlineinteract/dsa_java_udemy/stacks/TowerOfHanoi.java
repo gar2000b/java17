@@ -2,8 +2,7 @@ package com.onlineinteract.dsa_java_udemy.stacks;
 
 import com.onlineinteract.utility.Print;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The TowerOfHanoi class provides a solution to the Tower of Hanoi puzzle,
@@ -38,7 +37,7 @@ public class TowerOfHanoi {
         tower1.setName("Tower 1");
 //        tower1.push(5);
 //        tower1.push(4);
-//        tower1.push(3);
+        tower1.push(3);
         tower1.push(2);
         tower1.push(1);
         towers.put(1, tower1);
@@ -59,7 +58,7 @@ public class TowerOfHanoi {
         // Start the Tower of Hanoi algorithm to move all disks from Tower 1 to Tower 3.
         System.out.println("Algo commencing:");
         Print.printSeparator();
-        hanoiRecursive(tower1.height, 1, 3);
+        hanoiRecursive2(tower1.height, 1, 3);
 //        hanoiIteration(tower1.height, 1, 3);
         System.out.println("Algo Complete");
         Print.printSeparator();
@@ -251,7 +250,7 @@ public class TowerOfHanoi {
             System.out.println("SMALLEST DISK - n: " + n);
             moveDisk(start, end);  // Move the smallest disk directly.
         } else {
-            int other = 6 - (start + end);  // Find the auxiliary tower.
+            int other = getOtherTower(start, end);
 
             // Step 1: Move (n-1) disks from start to auxiliary.
             hanoiRecursive(n - 1, start, other);
@@ -263,6 +262,44 @@ public class TowerOfHanoi {
             // Step 3: Move (n-1) disks from auxiliary to end.
             hanoiRecursive(n - 1, other, end);
         }
+    }
+
+    /**
+     * Alternate version of the recursive tower of hanoi - cut down
+     *
+     * @param n
+     * @param start
+     * @param end
+     */
+    private static void hanoiRecursive2(int n, int start, int end) {
+        if (n == 1) {
+            moveDisk(start, end);
+            return;
+        }
+
+        int other = getOtherTower(start, end);
+        hanoiRecursive2(n - 1, start, other);
+        moveDisk(start, end);
+        hanoiRecursive2(n - 1, other, end);
+    }
+
+    /**
+     * To calculate the other tower from 3 towers: 1, 2 & 3
+     * <br><br>
+     * Add up the x3 towers values (1 + 2 + 3) = 6
+     * <br><br>
+     * Then, with logical deduction, removing any x2 towers values should leave you with the other:
+     * <br><br>
+     * For towers 1 & 3 as the start and end towers, that must leave:
+     * <br><br>
+     * other = (1 + 2 + 3) - (1 + 3) = 2
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    private static int getOtherTower(int start, int end) {
+        return (1 + 2 + 3) - (start + end);
     }
 
     /**

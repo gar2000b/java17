@@ -2,6 +2,9 @@ package com.onlineinteract.dsa_java_udemy.dynamic_programming;
 
 import com.onlineinteract.utility.Print;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Notes:
  * <br><br>
@@ -48,6 +51,12 @@ public class Fibonacci {
         memo = new Integer[100];
         System.out.println(iteration2(5));
         System.out.println("Fibonacci iteration with intermediate variable - counter: " + counter);
+        Print.printSeparator();
+
+        counter = 0;
+        memo = new Integer[100];
+        System.out.println(iteration3(5));
+        System.out.println("Fibonacci iteration returning list - counter: " + counter);
         Print.printSeparator();
     }
 
@@ -165,5 +174,23 @@ public class Fibonacci {
         }
 
         return result;
+    }
+
+    public static List<Integer> iteration3(int n) {
+        int prevValue = 0;
+        int result = 1;
+        List<Integer> nums = new ArrayList<>();
+
+        nums.add(prevValue);
+        nums.add(result);
+
+        for (int i = 2; i <= n; i++) {
+            int tmp = result;
+            result = result + prevValue;
+            nums.add(result);
+            prevValue = tmp;
+        }
+
+        return nums;
     }
 }
